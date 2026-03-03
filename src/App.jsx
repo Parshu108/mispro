@@ -11,6 +11,7 @@ import Blog from "./pages/Blog";
 import Cartdata from "./pages/cartdata";
 import Checkout from "./pages/checkout";
 import OrderComplete from "./pages/ordercomplete";
+import Productdisplays from "./pages/showroom";
 
 
 
@@ -35,6 +36,7 @@ const app=()=>{
         <Route path="login" element={<Login/>}/>
         <Route path="blog" element={<Blog/>}/>
         <Route path="checkout" element={<Checkout/>}  />
+        <Route path="productdisplays/:id" element={<Productdisplays/>}/>
         </Route>
       </Routes>
     </BrowserRouter>

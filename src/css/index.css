@@ -252,8 +252,12 @@ span{
   color: #343a40;
 }
 
+.datas{
+  background-image: url(../image/slide/1.png);
+}
 
-.input {
+
+/* .input {
   width: 100%;
   padding: 12px 15px;
   margin: 8px 0;
@@ -266,4 +270,4 @@ span{
 .input:focus {
   border-color: #4f46e5;
   box-shadow: 0 0 0 3px rgba(79,70,229,0.1);
-}
+} */

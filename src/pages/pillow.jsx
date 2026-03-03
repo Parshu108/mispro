@@ -1,9 +1,9 @@
-import React from 'react'
+import React from "react";
 
 const Pillow = () => {
+  
   return (
-    <div>Pillow</div>
-  )
+    <h1>Pillow Page</h1>
+  );
 }
-
 export default Pillow;

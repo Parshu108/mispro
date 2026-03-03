@@ -3,7 +3,7 @@ import React from "react";
 const sliderPosts = [
   {
     id: 1,
-    img: "/assets/images/blog-page/blog-slide-01.jpg",
+    img: "public/images/blog-page/blog-slide-01.jpg",
     author: "admin",
     categories: ["Beauty", "Fashion"],
     title: "Spring – Summer Trending 2020",
@@ -12,7 +12,7 @@ const sliderPosts = [
   },
   {
     id: 2,
-    img: "/assets/images/blog-page/blog-slide-02.jpg",
+    img: "public/images/blog-page/blog-slide-02.jpg",
     author: "admin",
     categories: ["Life Style", "Travel"],
     title: "The Easiest Way to Break Out on Top",
@@ -21,7 +21,7 @@ const sliderPosts = [
   },
   {
     id: 3,
-    img: "/assets/images/blog-page/blog-slide-03.jpg",
+    img: "public/images/blog-page/blog-slide-03.jpg",
     author: "admin",
     categories: ["Fashion", "Travel"],
     title: "Style for couple in Weeding season",
@@ -30,7 +30,7 @@ const sliderPosts = [
   },
   {
     id: 4,
-    img: "/assets/images/blog-page/blog-slide-04.jpg",
+    img: "public/images/blog-page/blog-slide-04.jpg",
     author: "admin",
     categories: ["Food", "Life Style"],
     title: "Cool Spring Street Style Looks",
@@ -39,7 +39,7 @@ const sliderPosts = [
   },
   {
     id: 5,
-    img: "/assets/images/blog-page/blog-slide-05.jpg",
+    img: "public/images/blog-page/blog-slide-05.jpg",
     author: "admin",
     categories: ["Fashion", "Life Style", "Travel"],
     title: "Style Advice All Men Should Hear",
@@ -48,7 +48,7 @@ const sliderPosts = [
   },
   {
     id: 6,
-    img: "/assets/images/blog-page/blog-slide-06.jpg",
+    img: "public/images/blog-page/blog-slide-06.jpg",
     author: "admin",
     categories: ["Beauty", "Food"],
     title: "101 Beauty Tips Every Girl Should Know",
@@ -68,52 +68,52 @@ const categoriesList = [
 const recentPosts = [
   {
     id: 1,
-    img: "/assets/images/blog-page/blog-thumbnail-01.jpg",
+    img: "public/images/blog-page/blog-thumbnail-01.jpg",
     title: "Spring – Summer Trending 2020",
     date: "April 6, 2020",
   },
   {
     id: 2,
-    img: "/assets/images/blog-page/blog-thumbnail-02.jpg",
+    img: "public/images/blog-page/blog-thumbnail-02.jpg",
     title: "The Easiest Way to Break Out on Top",
     date: "April 6, 2020",
   },
   {
     id: 3,
-    img: "/assets/images/blog-page/blog-thumbnail-03.jpg",
+    img: "public/images/blog-page/blog-thumbnail-03.jpg",
     title: "Style for couple in Weeding season",
     date: "April 6, 2020",
   },
 ];
 
 const instagramImages = [
-  "/assets/images/instagram/ins1_1.jpg",
-  "/assets/images/instagram/ins1_8.jpg",
-  "/assets/images/instagram/ins1_4.jpg",
-  "/assets/images/instagram/ins1_5.jpg",
-  "/assets/images/instagram/ins1_6.jpg",
-  "/assets/images/instagram/ins1_7.jpg",
-  "/assets/images/instagram/ins1_8.jpg",
-  "/assets/images/instagram/ins1_13.jpg",
-  "/assets/images/instagram/ins1_14.jpg",
+  "public/images/instagram/ins1_1.jpg",
+  "public/images/instagram/ins1_8.jpg",
+  "public/images/instagram/ins1_4.jpg",
+  "public/images/instagram/ins1_5.jpg",
+  "public/images/instagram/ins1_6.jpg",
+  "public/images/instagram/ins1_7.jpg",
+  "public/images/instagram/ins1_8.jpg",
+  "public/images/instagram/ins1_13.jpg",
+  "public/images/instagram/ins1_14.jpg",
 ];
 
 const saleProducts = [
   {
     id: 1,
-    img: "/assets/images/blog-page/pr-thumbnail-01.jpg",
+    img: "public/images/blog-page/pr-thumbnail-01.jpg",
     title: "Analogue Resin Strap",
     price: "$30.00",
   },
   {
     id: 2,
-    img: "/assets/images/blog-page/pr-thumbnail-02.jpg",
+    img: "public/images/blog-page/pr-thumbnail-02.jpg",
     title: "Ridley High Waist",
     price: "$36.00",
   },
   {
     id: 3,
-    img: "/assets/images/blog-page/pr-thumbnail-03.jpg",
+    img: "public/images/blog-page/pr-thumbnail-03.jpg",
     title: "Blush Beanie",
     price: "$15.00",
   },
@@ -140,7 +140,7 @@ export default function BlogPage() {
             {sliderPosts.map((post) => (
               <div
                 key={post.id}
-                className="relative h-320px min-w-[280px] flex-1 overflow-hidden rounded-xl sm:min-w-[360px] lg:min-w-[420px]"
+                className="relative h-[320px] min-w-[280px] flex-1 overflow-hidden rounded-xl sm:min-w-[360px] lg:min-w-[420px]"
               >
                 <a href={post.link} className="block h-full w-full">
                   <div
@@ -172,7 +172,7 @@ export default function BlogPage() {
                   </div>
 
                   <h2 className="mt-2 text-sm font-semibold uppercase text-white">
-                    <a href={post.link} className="hover:underline">
+                    <a href={post.link} className="hover:underline fs-lg">
                       {post.title}
                     </a>
                   </h2>
@@ -259,7 +259,7 @@ export default function BlogPage() {
                 <h5 className="text-lg font-medium text-gray-900">
                   Blog Categories
                 </h5>
-                <div className="mt-3 h-2px w-full bg-gray-200" />
+                <div className="mt-3 h-[2px] w-full bg-gray-200" />
 
                 <ul className="mt-4 space-y-3">
                   {categoriesList.map((cat, i) => (
@@ -305,7 +305,7 @@ export default function BlogPage() {
               {/* INSTAGRAM */}
               <div>
                 <h5 className="text-lg font-medium text-gray-900">Instagram</h5>
-                <div className="mt-3 h-2px w-full bg-gray-200" />
+                <div className="mt-3 h-[2px] w-full bg-gray-200" />
 
                 <div className="mt-4 grid grid-cols-3 gap-2">
                   {instagramImages.map((img, i) => (
@@ -332,7 +332,7 @@ export default function BlogPage() {
                 <h5 className="text-lg font-medium text-gray-900">
                   Sale Products
                 </h5>
-                <div className="mt-3 h-2px w-full bg-gray-200" />
+                <div className="mt-3 h-[2px] w-full bg-gray-200" />
 
                 <div className="mt-4 space-y-4">
                   {saleProducts.map((p) => (
@@ -356,7 +356,7 @@ export default function BlogPage() {
               {/* BLOG TAGS */}
               <div>
                 <h5 className="text-lg font-medium text-gray-900">Blog Tags</h5>
-                <div className="mt-3 h-2px w-full bg-gray-200" />
+                <div className="mt-3 h-[2px] w-full bg-gray-200" />
 
                 <div className="mt-4 flex flex-wrap gap-2">
                   {blogTags.map((tag, i) => (

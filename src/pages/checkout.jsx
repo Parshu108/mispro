@@ -36,24 +36,7 @@ const Checkout = () => {
           dispatch(removeCart())
           console.log(response.data);
           navigate("/ordercomplete");
-          }
-    
-
-//   const handleChange = async (e) => {
-//     setFormData({ ...formData, [e.target.name]: e.target.value });
-//   };
-
-//   const placeOrder = async (e) => {
-//     e.preventDefault();
-//     let api=`http://localhost:3000/costomber`;
-//       const res=await axios.get(api, formData);
-//       setFormData(res.data);
-//     alert("Order Placed Successfully ✅");
-//     dispatch(removeCart());
-//     navigate("/ordercomplete");
-//   };
-
-  
+          }  
   return (
     <>
      <div className="max-w-6xl mx-auto px-4 py-10">
