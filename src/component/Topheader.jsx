@@ -18,40 +18,98 @@ const Topheader = () => {
   const navigate=useNavigate();
   return (
     <>
-       <Navbar expand="lg" className="bg-body-tertiary headerdata" >
-      <Container fluid>
-        <Navbar.Brand href="#" style={{color:`green`,fontSize:`18px`,fontWeight:`600`}}><img src={Svg} style={{width:"150px", height:"60px", fontfamily: "Libre Baskervilleserif", fontWeight: "400",
-  fontstyle: "italic"}} ></img></Navbar.Brand>
-        <Navbar.Toggle aria-controls="navbarScroll" />
-        <Navbar.Collapse id="navbarScroll">
-          <Nav
-            className="me-auto my-2 my-lg-0"
-            style={{ maxHeight: '100px',margin:`auto`,gap:`10px` }}
-            navbarScroll
+      <Navbar expand="lg" className="bg-body-tertiary headerdata">
+        <Container fluid>
+          <Navbar.Brand
+            href="#"
+            style={{ color: `green`, fontSize: `18px`, fontWeight: `600` }}
           >
-            <Nav.Link href="#action1" as={Link} to="matter" style={{color:`black`,fontSize:`18px`,fontWeight:`600`}} className="headnav" >Matters</Nav.Link>
-            <Nav.Link href="#action2" as={Link} to="shop"  style={{color:`black`,fontSize:`18px`,fontWeight:`600`}} className="headnav">Shop</Nav.Link>
-            <Nav.Link href="#action2" as={Link} to="product" style={{color:`black`,fontSize:`18px`,fontWeight:`600`}} className="headnav">Product</Nav.Link>
-            <Nav.Link href="#action2" as={Link} to="pillow" style={{color:`black`,fontSize:`18px`,fontWeight:`600`}} className="headnav">Pillows</Nav.Link>
-            <Nav.Link href="#action2" as={Link} to="showroom" style={{color:`black`,fontSize:`18px`,fontWeight:`600`}} className="headnav">Showroom</Nav.Link>
-            <Nav.Link href="#action2" as={Link} to="sleep" style={{color:`black`,fontSize:`18px`,fontWeight:`600`}} className="headnav">Sleep</Nav.Link>
-            <Nav.Link href="#action2" as={Link} to="blog" style={{color:`black`,fontSize:`18px`,fontWeight:`600`}} className="headnav">Blog</Nav.Link>
-          </Nav>
-          <Form className="d-flex ">
-            <CiSearch style={{fontSize:'24px',}}  />
-           <a href="/login">
-             <CiUser style={{fontSize:'24px'}} />
-           </a>
-            <CiHeart style={{fontSize:'24px'}} />
-            <a href="#" onClick={()=>{navigate("/cartdata")}}>
-              <CiShoppingCart style={{fontSize:'24px'}} />
-            </a>
-          </Form>
-        </Navbar.Collapse>
-      </Container>
-    </Navbar>
+            <img
+              src={Svg}
+              style={{
+                width: "150px",
+                height: "60px",
+                fontfamily: "Libre Baskervilleserif",
+                fontWeight: "400",
+                fontstyle: "italic",
+              }}
+            ></img>
+          </Navbar.Brand>
+          <Navbar.Toggle aria-controls="navbarScroll" />
+          <Navbar.Collapse id="navbarScroll">
+            <Nav
+              className="me-auto my-2 my-lg-0"
+              style={{ maxHeight: "100px", margin: `auto`, gap: `10px` }}
+              navbarScroll
+            >
+              <Nav.Link
+                href="#action1"
+                as={Link}
+                to="matter"
+                style={{ color: `black`, fontSize: `18px`, fontWeight: `600` }}
+                className="headnav"
+              >
+                Matters
+              </Nav.Link>
+              <Nav.Link
+                href="#action2"
+                as={Link}
+                to="shop"
+                style={{ color: `black`, fontSize: `18px`, fontWeight: `600` }}
+                className="headnav"
+              >
+                Shop
+              </Nav.Link>
+              <Nav.Link
+                href="#action2"
+                as={Link}
+                to="product"
+                style={{ color: `black`, fontSize: `18px`, fontWeight: `600` }}
+                className="headnav"
+              >
+                Product
+              </Nav.Link>
+              <Nav.Link
+                href="#action2"
+                as={Link}
+                to="showroom"
+                style={{ color: `black`, fontSize: `18px`, fontWeight: `600` }}
+                className="headnav"
+              >
+                Showroom
+              </Nav.Link>
+              <Nav.Link
+                href="#action2"
+                as={Link}
+                to="blog"
+                style={{ color: `black`, fontSize: `18px`, fontWeight: `600` }}
+                className="headnav"
+              >
+                Blog
+              </Nav.Link>
+            </Nav>
+            <Form className="d-flex ">
+              <CiSearch style={{ fontSize: "24px" }} />
+              <a href="/login">
+                <CiUser style={{ fontSize: "24px" }} />
+              </a>
+              <a href="/wishlist">
+                <CiHeart style={{ fontSize: "24px" }} />
+              </a>
+              <a
+                href="#"
+                onClick={() => {
+                  navigate("/cartdata");
+                }}
+              >
+                <CiShoppingCart style={{ fontSize: "24px" }} />
+              </a>
+            </Form>
+          </Navbar.Collapse>
+        </Container>
+      </Navbar>
     </>
-  )
+  );
 }
 
 export default Topheader

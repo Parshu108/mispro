@@ -1,7 +1,23 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-const login = () => {
+const Login = () => {
   const [isLogin, setIsLogin] = useState(true);
+  const navigate = useNavigate();
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    // Example admin login check
+    const email = e.target.email.value;
+    const password = e.target.password.value;
+
+    if (email === email && password === password) {
+      navigate("/admin/dashboard"); // redirect to admin panel
+    } else {
+      alert("Invalid credentials");
+    }
+  };
 
   return (
     <div className="container-fluid min-vh-100 datas">
@@ -9,9 +25,7 @@ const login = () => {
         {/* LEFT PANEL */}
         <div
           className="col-md-6 d-none d-md-flex align-items-center justify-content-center text-white"
-          style={{
-            background: "linear-gradient(135deg, #0dcaf0, #0d6efd)",
-          }}
+          style={{ background: "linear-gradient(135deg, #0dcaf0, #0d6efd)" }}
         >
           <div className="text-center p-5">
             <h2 className="fw-bold mb-3">
@@ -33,7 +47,7 @@ const login = () => {
           </div>
         </div>
 
-        {/* RIGHT PANEL (FORM) */}
+        {/* RIGHT PANEL */}
         <div className="col-md-6 d-flex align-items-center justify-content-center bg-light p-4">
           <div
             className="card shadow-lg p-4 w-100"
@@ -43,35 +57,26 @@ const login = () => {
               {isLogin ? "Login" : "Create Account"}
             </h3>
 
-            <form>
+            <form onSubmit={handleSubmit}>
               {!isLogin && (
-                <>
-                  <div className="row">
-                    <div className="col-md-6 mb-3">
-                      <label className="form-label">First Name</label>
-                      <input
-                        type="text"
-                        className="form-control rounded-pill"
-                        placeholder="First name"
-                      />
-                    </div>
-
-                    <div className="col-md-6 mb-3">
-                      <label className="form-label">Last Name</label>
-                      <input
-                        type="text"
-                        className="form-control rounded-pill"
-                        placeholder="Last name"
-                      />
-                    </div>
+                <div className="row">
+                  <div className="col-md-6 mb-3">
+                    <label className="form-label">First Name</label>
+                    <input type="text" className="form-control rounded-pill" />
                   </div>
-                </>
+
+                  <div className="col-md-6 mb-3">
+                    <label className="form-label">Last Name</label>
+                    <input type="text" className="form-control rounded-pill" />
+                  </div>
+                </div>
               )}
 
               <div className="mb-3">
                 <label className="form-label">Email</label>
                 <input
                   type="email"
+                  name="email"
                   className="form-control rounded-pill"
                   placeholder="Enter email"
                 />
@@ -81,6 +86,7 @@ const login = () => {
                 <label className="form-label">Password</label>
                 <input
                   type="password"
+                  name="password"
                   className="form-control rounded-pill"
                   placeholder="Enter password"
                 />
@@ -92,30 +98,19 @@ const login = () => {
                   <input
                     type="password"
                     className="form-control rounded-pill"
-                    placeholder="Confirm password"
                   />
                 </div>
               )}
 
-              <button className="btn btn-info w-100 rounded-pill">
+              <button type="submit" className="btn btn-info w-100 rounded-pill">
                 {isLogin ? "Login" : "Register"}
               </button>
             </form>
-
-            {/* MOBILE TOGGLE */}
-            <div className="text-center mt-3 d-md-none">
-              {isLogin ? "Don't have an account?" : "Already have an account?"}
-              <button
-                className="btn btn-link"
-                onClick={() => setIsLogin(!isLogin)}
-              >
-                {isLogin ? "Sign Up" : "Login"}
-              </button>
-            </div>
           </div>
         </div>
       </div>
     </div>
   );
-}
-export default login;
+};
+
+export default Login;

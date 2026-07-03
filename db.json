@@ -221,9 +221,70 @@
       "city": "Jatkhedi, Bhopal",
       "state": "Madhya Pradesh",
       "pincode": "462027"
+    },
+    {
+      "id": "7140",
+      "products": [
+        {
+          "id": "1",
+          "name": "astron mattress",
+          "img": "../src/image/products/dot-01.jpg",
+          "prize": 9900,
+          "qnty": 1
+        },
+        {
+          "id": "10",
+          "name": "Dream Catcher Mattress",
+          "img": "../src/image/products/pr-16.jpg",
+          "prize": 6480,
+          "qnty": 1
+        },
+        {
+          "id": "22",
+          "name": "Dream Catcher Mattress",
+          "img": "../src/image/products/pr-46.jpg",
+          "prize": 6480,
+          "qnty": 1
+        }
+      ],
+      "totalamount": 22860
+    },
+    {
+      "id": "5706",
+      "products": [
+        {
+          "id": "2",
+          "name": "Dream Catcher Mattress",
+          "img": "../src/image/shop/Dream-Catcher-Mattress.png",
+          "prize": 6480,
+          "qnty": 1
+        }
+      ],
+      "totalamount": 6480
+    },
+    {
+      "id": "d35d",
+      "products": [
+        {
+          "id": "4",
+          "name": "Vintage Mattress",
+          "img": "../src/image/products/pr-05.jpg",
+          "prize": 9900,
+          "qnty": 1
+        }
+      ],
+      "totalamount": 9900,
+      "payment": "cod",
+      "fullname": "Prince Kumar",
+      "address": "Kahua Biraul Darbhanga Bihar 847103\nKahua biraul Darbhanga Bihar",
+      "city": "Darbhanga",
+      "state": "Bihar",
+      "pincode": "847103",
+      "phone": "0123456789",
+      "email": "princekumar577gh@gmail.com"
     }
   ],
-  "product2":[
+  "product2": [
     {
       "id": "1",
       "name": "astron mattress",
@@ -368,30 +429,29 @@
       "prize": 9900,
       "img": "../src/image/products/thumb-02.jpg"
     },
-      {
-        "id": "25",
-        "name": "astron mattress",
-        "prize": 9900,
-        "img": "../src/image/products/thumb-03.jpg"
-      },
-      {
-        "id": "26",
-        "name": "Dream Catcher Mattress",
-        "prize": 6480,
-        "img": "../src/image/products/thumb-04.jpg"
-      },
-      {
-        "id": "27",
-        "name": "Ortho Mattress",
-        "prize": 6120,
-        "img": "../src/image/products/thumb-05.jpg"
-      },
-      {
-        "id": "28",
-        "name": "Vintage Mattress",
-        "prize": 9900,
-        "img": "../src/image/products/thumb-06.jpg"
-      }
+    {
+      "id": "25",
+      "name": "astron mattress",
+      "prize": 9900,
+      "img": "../src/image/products/thumb-03.jpg"
+    },
+    {
+      "id": "26",
+      "name": "Dream Catcher Mattress",
+      "prize": 6480,
+      "img": "../src/image/products/thumb-04.jpg"
+    },
+    {
+      "id": "27",
+      "name": "Ortho Mattress",
+      "prize": 6120,
+      "img": "../src/image/products/thumb-05.jpg"
+    },
+    {
+      "id": "28",
+      "name": "Vintage Mattress",
+      "prize": 9900,
+      "img": "../src/image/products/thumb-06.jpg"
+    }
   ]
-  
 }

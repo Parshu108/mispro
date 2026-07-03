@@ -21,6 +21,7 @@ const Checkout = () => {
    });
 
   let netAmount = 0;
+  let sno = 0;
 
   const handleChange=(e)=>{
      let name=e.target.name; 
@@ -160,6 +161,8 @@ const Checkout = () => {
 
           <div className="space-y-4">
             {product.map((key) => (
+              netAmount += key.prize * key.qnty,
+                sno++,
                
               <div
                 className="flex items-center justify-between border-b pb-3"
