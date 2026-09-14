@@ -48,6 +48,7 @@ const cartSlice = createSlice({
         state.cart.push({ ...actions.payload, qnty: 1 });
       }
     },
+    
   },
 });
 export const{addtocard,qntIncrese,qntydecrease,dataRemove,removeCart,customber,addtocards}=cartSlice.actions;

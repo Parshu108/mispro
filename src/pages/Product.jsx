@@ -1,112 +1,247 @@
-import { useState,useEffect } from 'react'
-// import { motion } from 'framer-motion';
-import axios from 'axios';
+import { useState, useEffect } from "react";
+import axios from "axios";
 import img1 from "../image/payment-.png";
-import { useDispatch } from 'react-redux';
-import { useParams } from 'react-router-dom';
-import { IoStar } from "react-icons/io5";
-import { IoStarHalf } from "react-icons/io5";
+import { useDispatch, useSelector } from "react-redux";
+import { useParams, useNavigate } from "react-router-dom";
+import { IoStar, IoStarHalf } from "react-icons/io5";
 import { CiHeart } from "react-icons/ci";
-import { addtocard } from '../cartslice';
-
+import { FaHeart } from "react-icons/fa6";
+import {
+  FaRupeeSign,
+  FaShoppingCart,
+  FaBolt,
+  FaTruck,
+  FaShieldAlt,
+} from "react-icons/fa";
+import { addtocard } from "../cartslice";
+import { addtowishlist, removefromwishlist } from "../wishlistslice";
 
 const Productdisplay = () => {
   const [product, setProduct] = useState({});
-  
-  const dispatch=useDispatch();
-  const{id}=useParams();
+  const [selectedSize, setSelectedSize] = useState("King");
+  const [loading, setLoading] = useState(true);
 
-  // Sample product data  
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { id } = useParams();
 
-  const loaddata = async() => {
-    const api = `http://localhost:3000/product/${id}`;
-    const res = await axios.get(api);
-    setProduct(res.data);
-  }
+  const wishlist = useSelector((state) => state.mywishlist.wishlist);
+  const isWished = wishlist.some((item) => item.id == product.id);
+
+  const loaddata = async () => {
+    try {
+      setLoading(true);
+      setProduct({}); // clear previous product so a failed/slow fetch can't show stale data
+
+      try {
+        const res = await axios.get(`http://localhost:3000/product/${id}`);
+        setProduct(res.data || {});
+      } catch (firstError) {
+        // Not found in "product" — this id may belong to the "product2" collection instead
+        const res = await axios.get(`http://localhost:3000/product2/${id}`);
+        setProduct(res.data || {});
+      }
+    } catch (error) {
+      console.error("Error loading product:", error);
+      setProduct({});
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     loaddata();
   }, [id]);
 
-  
+  const sizes = ["King", "Queen", "Double", "Single", "Custom Size"];
 
+  const toggleWishlist = () => {
+    if (isWished) {
+      dispatch(removefromwishlist({ id: product.id }));
+    } else {
+      dispatch(
+        addtowishlist({
+          id: product.id,
+          name: product.name,
+          img: product.img,
+          prize: product.prize,
+        }),
+      );
+    }
+  };
 
   return (
-    <>
-      <section className=" mx-auto p-1">
-        <h1 className='text-center p-4 fs-1 bg-gray-200  h-50'>Our Product</h1>
+    <div className="bg-[#EEEEEE] min-h-screen py-10">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6">
+        {loading ? (
+          <div className="p-16 text-center text-[#393E46]">
+            <div className="inline-block animate-spin rounded-full h-10 w-10 border-4 border-[#393E46] border-t-[#00ADB5] mb-3"></div>
+            <p className="font-semibold text-sm">Loading mattress details...</p>
+          </div>
+        ) : (
+          <div className="bg-white rounded-3xl border border-[#393E46]/10 shadow-xl overflow-hidden p-6 sm:p-10">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
+              {/* Image Preview */}
+              <div className="bg-gray-50 rounded-2xl p-6 border border-gray-100 flex items-center justify-center">
+                <img
+                  className="w-full max-h-96 object-contain rounded-xl hover:scale-105 transition-transform duration-300"
+                  src={product.img}
+                  alt={product.name}
+                  onError={(e) => {
+                    e.target.src =
+                      "https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=400";
+                  }}
+                />
+              </div>
 
-      <div className="max-w-6xl rounded m-auto  flex  flex-row items-center justify-center">
-        <div className=" w-100 p-4">
-          <img className="w-full" src={product.img} alt="Product Image"/>
-        </div>
-        <div className=" w-100 p-4"> 
-          <div className="font-bold text-xl mb-2 ">{product.name}</div>
-           <p className="text-muted">
-               The Classic Mattress offers the perfect blend of comfort and support with its medium-firm feel. Featuring cool gel foam to regulate temperature and high resilience foam for lasting durability, this affordable mattress ensures a cool, comfortable, and restful night's sleep.
-            </p>
-          <p className="text-gray-700 text-base mb-4 flex gap-2">
-            <h6 >rating .</h6>
-              <IoStar className="text-yellow-500" />
-              <IoStar className="text-yellow-500" />
-              <IoStar className="text-yellow-500" />
-              <IoStar className="text-yellow-500" />
-              <IoStarHalf className="text-yellow-500" />
-            <h6>4.8</h6>
-          </p>
-          <div  className="pt-2 mb-3 pb-3">
-            <h6 className="fw-bold mt-3">Size: <span x-text="size"></span></h6>
-            <div className="product-color-list size mt-2 gap-3 flex align-items-center">
-              <a href="#!" className="inline-block rounded border align-items-center justify-content-center  hover:bg-yellow-500 py-2 px-4 text-black text-decoration-none"  >King</a>
-              <a href="#!" className="inline-block rounded border align-items-center justify-content-center  hover:bg-yellow-500 py-2 px-4 text-black text-decoration-none" >Single</a>
-              <a href="#!" className="inline-block rounded border align-items-center justify-content-center  hover:bg-yellow-500 py-2 px-4 text-black text-decoration-none"  >Double</a>
-              <a href="#!" className="inline-block rounded border align-items-center justify-content-center  hover:bg-yellow-500 py-2 px-4 text-black text-decoration-none"  >Queen</a>
-              <a href="#!" className="inline-block rounded border align-items-center justify-content-center  text-black hover:bg-yellow-500 py-2 px-4 text-decoration-none"  >Custome Size</a>
+              {/* Product Info */}
+              <div className="space-y-6">
+                <div>
+                  <span className="text-xs font-bold uppercase tracking-widest text-[#00ADB5]">
+                    Mishu Premium Ortho Series
+                  </span>
+                  <h1 className="text-2xl sm:text-3xl font-extrabold text-[#222831] mt-1">
+                    {product.name || "Orthopedic Comfort Mattress"}
+                  </h1>
+
+                  {/* Rating */}
+                  <div className="flex items-center gap-2 mt-2">
+                    <div className="flex text-yellow-500 text-sm">
+                      <IoStar />
+                      <IoStar />
+                      <IoStar />
+                      <IoStar />
+                      <IoStarHalf />
+                    </div>
+                    <span className="text-xs font-bold text-[#393E46]">
+                      4.8 / 5.0 (142 Reviews)
+                    </span>
+                  </div>
+                </div>
+
+                <p className="text-sm text-[#393E46] leading-relaxed">
+                  The {product.name} offers the ideal balance of adaptive
+                  pressure relief and firm orthopedic alignment. Infused with
+                  breathable cool-gel memory foam to regulate core sleep
+                  temperature throughout the night.
+                </p>
+
+                {/* Size Selector */}
+                <div>
+                  <label className="block text-xs font-bold text-[#222831] uppercase tracking-wider mb-2">
+                    Select Dimensions & Size:
+                  </label>
+                  <div className="flex flex-wrap gap-2">
+                    {sizes.map((size) => (
+                      <button
+                        key={size}
+                        type="button"
+                        onClick={() => setSelectedSize(size)}
+                        className={`px-4 py-2 rounded-xl text-xs font-semibold transition ${
+                          selectedSize === size
+                            ? "bg-[#222831] text-[#00ADB5] border-2 border-[#00ADB5] shadow-xs"
+                            : "bg-[#EEEEEE] text-[#393E46] hover:bg-gray-200 border border-transparent"
+                        }`}
+                      >
+                        {size}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Price tag */}
+                <div className="flex items-center gap-3 pt-2">
+                  <span className="text-xs font-bold uppercase text-[#393E46]">
+                    Special Price:
+                  </span>
+                  <span className="text-3xl font-extrabold text-[#222831] flex items-center">
+                    <FaRupeeSign className="text-2xl text-[#00ADB5]" />
+                    {(Number(product.prize) || 0).toLocaleString("en-IN")}
+                  </span>
+                  <span className="text-xs text-emerald-600 font-bold bg-emerald-50 px-2 py-0.5 rounded">
+                    Save 25%
+                  </span>
+                </div>
+
+                {/* Actions */}
+                <div className="flex flex-wrap gap-3 pt-2">
+                  <button
+                    onClick={() => {
+                      dispatch(
+                        addtocard({
+                          id: product.id,
+                          name: product.name,
+                          img: product.img,
+                          prize: product.prize,
+                          qnty: 1,
+                        }),
+                      );
+                    }}
+                    className="flex-1 py-3 px-6 bg-[#00ADB5] hover:bg-[#009299] text-[#222831] hover:text-white font-extrabold text-sm rounded-xl shadow-md transition flex items-center justify-center gap-2"
+                  >
+                    <FaShoppingCart /> Add to Cart
+                  </button>
+
+                  <button
+                    onClick={() => {
+                      dispatch(
+                        addtocard({
+                          id: product.id,
+                          name: product.name,
+                          img: product.img,
+                          prize: product.prize,
+                          qnty: 1,
+                        }),
+                      );
+                      navigate("/checkout");
+                    }}
+                    className="flex-1 py-3 px-6 bg-[#222831] hover:bg-[#393E46] text-[#EEEEEE] font-extrabold text-sm rounded-xl shadow-md transition flex items-center justify-center gap-2"
+                  >
+                    <FaBolt className="text-[#00ADB5]" /> Buy Now
+                  </button>
+
+                  <button
+                    onClick={toggleWishlist}
+                    title={
+                      isWished ? "Remove from wishlist" : "Add to wishlist"
+                    }
+                    className={`p-3 rounded-xl border text-xl transition ${
+                      isWished
+                        ? "bg-red-50 text-red-500 border-red-200"
+                        : "bg-[#EEEEEE] text-red-500 border-[#393E46]/10 hover:bg-red-50"
+                    }`}
+                  >
+                    {isWished ? <FaHeart /> : <CiHeart />}
+                  </button>
+                </div>
+
+                {/* Value perks */}
+                <div className="pt-4 border-t border-gray-100 grid grid-cols-2 gap-3 text-xs text-[#393E46]">
+                  <div className="flex items-center gap-2">
+                    <FaTruck className="text-[#00ADB5]" />
+                    <span>Free Pan-India Delivery</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <FaShieldAlt className="text-[#00ADB5]" />
+                    <span>10-Year Manufacturer Warranty</span>
+                  </div>
+                </div>
+
+                {/* Payment icons */}
+                <div className="pt-2">
+                  <img
+                    src={img1}
+                    alt="Secure Payments"
+                    className="h-8 object-contain"
+                  />
+                </div>
+              </div>
             </div>
           </div>
-          <p className="flex gap-2 fs-4 text-gray-600 dark:text-gray-400 ">
-            <span>Price:-</span>
-            <span> {product.prize}</span>
-          </p>
-          <div className='flex gap-4 mt-4'>
-            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-            onClick={()=>
-            dispatch(addtocard({
-              id:product.id,
-              name:product.name,
-              img:product.img,
-              prize:product.prize,
-              qnty:1
-            })
-            )
-           }
-            >
-              Add to Cart
-           </button>
-            <button className='text-white rounded font-bold py-2 px-4 bg-blue-500 hover:bg-blue-700 '>By It now</button>
-            <div className=" rounded border border-dark bg-transparent text-center m-1" >
-              <a href="#" className='fs-2'><CiHeart className="text-red-500 " /></a>
-            </div>
-          </div>
-          <div className="mt-4">
-            <p className="mb-2"><span>Need Custom Size?</span><span className="text-muted"><a href="#" className="text-black fw-semibold"> Enquiry Now</a></span></p>
-          </div>
-          <div className="mt-4">
-            <img src={img1} alt="" className="img-fluid" width="448"/>
-          </div>
-          <div className="mt-4 flex gap-3 text-nowrap flex-wrap row-gap-1">
-            <a href="#" className="text-black fw-semibold text-decoration-none data" style={{}}>Size Guide</a>
-            <a href="#"  className=" text-black fw-semibold mx-2 text-decoration-none data">Delivery and Return</a>
-            <a href="#"  className="text-black fw-semibold text-decoration-none data">Ask a Question</a>
-          </div>
-        </div>
+        )}
       </div>
-      </section>
-      <hr className='my-8' />
-
-      
-    </>
-  )
-}
+    </div>
+  );
+};
 
 export default Productdisplay;

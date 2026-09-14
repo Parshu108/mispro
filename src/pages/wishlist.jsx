@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import {
   Search,
   User,
@@ -18,6 +19,8 @@ import {
   Grid2x2,
   Grid3x3,
 } from "lucide-react";
+import { removefromwishlist } from "../wishlistslice";
+import { addtocards } from "../cartslice";
 
 /* ---------------------------------------------------------
    Design tokens (see inline comments) — Mishu, a bedding &
@@ -41,109 +44,6 @@ const CATEGORIES = [
 ];
 
 const seedImg = (seed) => `https://picsum.photos/seed/${seed}/600/750`;
-
-const INITIAL_WISHLIST = [
-  {
-    id: "w1",
-    name: "Ridley Cloud Pillow",
-    sizes: ["Standard", "Queen", "King"],
-    price: 36,
-    salePrice: null,
-    swatches: ["#e8e2d6", "#20343a"],
-    img: seedImg("mishu-pillow-01"),
-    badge: null,
-  },
-  {
-    id: "w2",
-    name: "Cream Linen Duvet Set",
-    sizes: ["Twin", "Queen", "King"],
-    price: 135,
-    salePrice: null,
-    swatches: ["#f1ece0"],
-    img: seedImg("mishu-duvet-02"),
-    badge: "New",
-  },
-  {
-    id: "w3",
-    name: "Charcoal Memory Topper",
-    sizes: ["Queen", "King"],
-    price: 160,
-    salePrice: null,
-    swatches: ["#2a2a2a"],
-    img: seedImg("mishu-topper-03"),
-    badge: null,
-  },
-  {
-    id: "w4",
-    name: "La Rosé Weighted Blanket",
-    sizes: ["S", "M", "L"],
-    price: 90,
-    salePrice: 60,
-    swatches: ["#c98a7d", "#20343a"],
-    img: seedImg("mishu-blanket-04"),
-    badge: "-25%",
-  },
-  {
-    id: "w5",
-    name: "Mercury Bamboo Sheet Set",
-    sizes: ["S", "M"],
-    price: 68,
-    salePrice: null,
-    swatches: ["#dcd6c8", "#8b8073"],
-    img: seedImg("mishu-sheet-05"),
-    badge: null,
-  },
-  {
-    id: "w6",
-    name: "Blush Knit Bed Runner",
-    sizes: ["One Size"],
-    price: 45,
-    salePrice: null,
-    swatches: ["#e3c9c2", "#c98a7d", "#20343a"],
-    img: seedImg("mishu-runner-06"),
-    badge: null,
-  },
-  {
-    id: "w7",
-    name: "Sea Salt Cooling Gel Pillow",
-    sizes: ["XS", "S", "M"],
-    price: 60,
-    salePrice: 40,
-    swatches: ["#6f9c92", "#20343a"],
-    img: seedImg("mishu-gel-07"),
-    badge: "-25%",
-  },
-  {
-    id: "w8",
-    name: "Short-Fill Hotel Comforter",
-    sizes: [],
-    price: 30,
-    salePrice: null,
-    swatches: [],
-    img: seedImg("mishu-comforter-08"),
-    badge: null,
-  },
-  {
-    id: "w9",
-    name: "Chill Sleep Candle",
-    sizes: [],
-    price: 16,
-    salePrice: null,
-    swatches: [],
-    img: seedImg("mishu-candle-09"),
-    badge: null,
-  },
-  {
-    id: "w10",
-    name: "Sport Recovery Sleep Mask",
-    sizes: [],
-    price: 35,
-    salePrice: null,
-    swatches: [],
-    img: seedImg("mishu-mask-10"),
-    badge: null,
-  },
-];
 
 const INITIAL_CART = [
   {
@@ -187,7 +87,17 @@ function classNames(...c) {
   return c.filter(Boolean).join(" ");
 }
 
-function Price({ price, salePrice }) {
+// Price for real catalog items — uses your app's ₹ "prize" field.
+function Price({ prize }) {
+  return (
+    <p className="mt-1 text-[13px] font-semibold text-[#B3502E]">
+      ₹{(Number(prize) || 0).toLocaleString("en-IN")}
+    </p>
+  );
+}
+
+// Price for the demo cart drawer, which still uses $ price/salePrice.
+function CartPrice({ price, salePrice }) {
   if (salePrice != null) {
     return (
       <p className="mt-1 flex items-center gap-2 text-[13px]">
@@ -201,37 +111,11 @@ function Price({ price, salePrice }) {
   return <p className="mt-1 text-[13px] text-stone-500">${price.toFixed(2)}</p>;
 }
 
-function Swatches({ colors }) {
-  if (!colors?.length) return null;
-  return (
-    <div className="mt-2 flex items-center gap-1.5">
-      {colors.map((c, i) => (
-        <span
-          key={i}
-          className="h-3.5 w-3.5 rounded-full ring-1 ring-black/10"
-          style={{ backgroundColor: c }}
-        />
-      ))}
-    </div>
-  );
-}
-
 /* ---------------- Product card ---------------- */
 function WishlistCard({ item, onRemove, onQuickView, onAddToCart, dense }) {
   return (
     <div className="group flex flex-col">
       <div className="relative overflow-hidden rounded-[6px] bg-stone-100">
-        {item.badge && (
-          <span
-            className={classNames(
-              "absolute left-3 top-3 z-10 rounded-full px-2.5 py-1 text-[10px] font-semibold tracking-wide text-white",
-              item.badge.startsWith("-") ? "bg-[#B3502E]" : "bg-[#20343a]",
-            )}
-          >
-            {item.badge}
-          </span>
-        )}
-
         <button
           onClick={() => onRemove(item.id)}
           aria-label="Remove from wishlist"
@@ -243,17 +127,15 @@ function WishlistCard({ item, onRemove, onQuickView, onAddToCart, dense }) {
         <img
           src={item.img}
           alt={item.name}
+          onError={(e) => {
+            e.target.src =
+              "https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=400";
+          }}
           className={classNames(
             "w-full object-cover transition duration-500 group-hover:scale-105",
             dense ? "aspect-[4/5]" : "aspect-[3/4]",
           )}
         />
-
-        {item.sizes?.length > 0 && (
-          <p className="pointer-events-none absolute bottom-3 left-0 right-0 text-center text-[11px] font-medium tracking-wide text-white opacity-0 transition group-hover:opacity-100">
-            {item.sizes.join(" · ")}
-          </p>
-        )}
 
         <div className="absolute inset-x-0 bottom-0 hidden translate-y-full flex-col gap-2 p-3 transition duration-300 group-hover:translate-y-0 md:flex">
           <button
@@ -275,8 +157,7 @@ function WishlistCard({ item, onRemove, onQuickView, onAddToCart, dense }) {
         <h3 className="font-serif text-[15px] leading-snug text-stone-900">
           {item.name}
         </h3>
-        <Price price={item.price} salePrice={item.salePrice} />
-        <Swatches colors={item.swatches} />
+        <Price prize={item.prize} />
       </div>
     </div>
   );
@@ -295,7 +176,7 @@ function CartLine({ item, onQty, onRemove }) {
       <div>
         <h4 className="font-serif text-[15px] text-stone-900">{item.name}</h4>
         <p className="mt-0.5 text-[12px] text-stone-500">{item.variant}</p>
-        <Price price={item.price} salePrice={item.salePrice} />
+        <CartPrice price={item.price} salePrice={item.salePrice} />
 
         <div className="mt-2 flex items-center gap-3">
           <div className="flex items-center rounded-full border border-stone-300">
@@ -364,7 +245,13 @@ function FooterAccordion({ title, children, defaultOpen = false }) {
 
 /* ---------------- Main page ---------------- */
 export default function WishlistPage() {
-  const [wishlist, setWishlist] = useState(INITIAL_WISHLIST);
+  const dispatch = useDispatch();
+
+  // Real wishlist, populated by the heart icon on the product page.
+  const wishlist = useSelector((state) => state.mywishlist.wishlist);
+
+  // Demo cart drawer UI kept as-is (visual only) — real "Add to Cart"
+  // clicks below also dispatch to the actual app cart via addtocards.
   const [cart, setCart] = useState(INITIAL_CART);
   const [gridDensity, setGridDensity] = useState(3);
   const [page, setPage] = useState(1);
@@ -394,31 +281,21 @@ export default function WishlistPage() {
 
   const removeFromWishlist = (id) => {
     const item = wishlist.find((w) => w.id === id);
-    setWishlist((w) => w.filter((x) => x.id !== id));
+    dispatch(removefromwishlist({ id }));
     if (item) flash(`Removed "${item.name}" from wishlist`);
   };
 
   const addToCart = (item) => {
-    setCart((c) => {
-      const existing = c.find((x) => x.name === item.name);
-      if (existing) {
-        return c.map((x) =>
-          x.id === existing.id ? { ...x, qty: x.qty + 1 } : x,
-        );
-      }
-      return [
-        ...c,
-        {
-          id: `c-${item.id}-${Date.now()}`,
-          name: item.name,
-          variant: item.sizes?.[0] || "Default",
-          price: item.price,
-          salePrice: item.salePrice,
-          qty: 1,
-          img: item.img,
-        },
-      ];
-    });
+    // Real app cart
+    dispatch(
+      addtocards({
+        id: item.id,
+        name: item.name,
+        img: item.img,
+        prize: item.prize,
+      }),
+    );
+
     flash(`Added "${item.name}" to cart`);
     setCartOpen(true);
   };
@@ -449,73 +326,6 @@ export default function WishlistPage() {
         .font-sans { font-family: 'Inter', ui-sans-serif, system-ui, sans-serif; }
         .font-serif { font-family: 'Fraunces', Georgia, serif; }
       `}</style>
-
-      {/* ---------------- Top bar ---------------- */}
-      {/* <header className="sticky top-0 z-40 border-b border-stone-200 bg-[#F6F3ED]/95 backdrop-blur">
-        <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-4 md:px-8">
-          <button
-            className="text-stone-800 lg:hidden"
-            onClick={() => setMenuOpen(true)}
-            aria-label="Open menu"
-          >
-            <Menu size={22} />
-          </button>
-
-          <a href="#!" className="flex items-center gap-2">
-            <span className="font-serif text-[22px] font-medium tracking-tight text-stone-900">
-              Mishu
-            </span>
-            <span className="hidden text-[11px] uppercase tracking-[0.25em] text-stone-500 sm:inline">
-              Sleep Co.
-            </span>
-          </a>
-
-          <nav className="hidden items-center gap-8 lg:flex">
-            {CATEGORIES.map((c) => (
-              <a
-                key={c}
-                href="#!"
-                className="text-[13px] font-medium tracking-wide text-stone-700 transition hover:text-[#20343a]"
-              >
-                {c}
-              </a>
-            ))}
-          </nav>
-
-          <div className="flex items-center gap-4 text-stone-800">
-            <button aria-label="Search" onClick={() => setSearchOpen(true)}>
-              <Search size={19} />
-            </button>
-            <button
-              aria-label="Account"
-              onClick={() => setAccountOpen(true)}
-              className="hidden md:block"
-            >
-              <User size={19} />
-            </button>
-            <a
-              href="#!"
-              className="relative hidden md:block"
-              aria-label="Wishlist"
-            >
-              <Heart size={19} />
-              <span className="absolute -right-2 -top-2 flex h-4 w-4 items-center justify-center rounded-full bg-stone-900 text-[9px] text-white">
-                {wishlist.length}
-              </span>
-            </a>
-            <button
-              aria-label="Cart"
-              className="relative"
-              onClick={() => setCartOpen(true)}
-            >
-              <ShoppingCart size={19} />
-              <span className="absolute -right-2 -top-2 flex h-4 w-4 items-center justify-center rounded-full bg-[#B3502E] text-[9px] text-white">
-                {cartCount}
-              </span>
-            </button>
-          </div>
-        </div>
-      </header> */}
 
       {/* ---------------- Banner ---------------- */}
       <div className="relative overflow-hidden bg-[#20343a] py-16 text-center text-white">
@@ -574,7 +384,7 @@ export default function WishlistPage() {
               Your wishlist is empty
             </p>
             <p className="mt-1 text-[13px] text-stone-500">
-              Items you save will show up here.
+              Tap the heart icon on any product to save it here.
             </p>
           </div>
         ) : (
@@ -626,7 +436,7 @@ export default function WishlistPage() {
             {
               icon: Truck,
               title: "Free shipping",
-              copy: "On every U.S. order, no minimum.",
+              copy: "On every order, no minimum.",
             },
             {
               icon: Headphones,
@@ -651,126 +461,6 @@ export default function WishlistPage() {
           ))}
         </div>
       </div>
-
-      {/* ---------------- Footer ---------------- */}
-      {/* <footer className="bg-[#F1EDE4]">
-        <div className="mx-auto max-w-7xl px-4 py-10 md:px-8">
-          <div className="grid grid-cols-1 gap-x-8 md:grid-cols-5">
-            <div className="md:col-span-2">
-              <span className="font-serif text-xl text-stone-900">
-                Mishu Sleep Co.
-              </span>
-              <p className="mt-4 text-[13px] leading-relaxed text-stone-500">
-                Plot no. 911, Alang Road, Opposite Pooja Weigh Bridge, Trapaj,
-                <br /> Bhavnagar, Gujarat 364150
-              </p>
-              <p className="mt-2 text-[13px] text-stone-500">
-                info@mishumattress.com
-              </p>
-              <p className="text-[13px] text-stone-500">+91 63521 09065</p>
-            </div>
-
-            <FooterAccordion title="Help">
-              <ul className="space-y-2 text-[13px] text-stone-500">
-                <li>
-                  <a href="#!" className="hover:text-stone-900">
-                    Privacy Policy
-                  </a>
-                </li>
-                <li>
-                  <a href="#!" className="hover:text-stone-900">
-                    Returns &amp; Exchanges
-                  </a>
-                </li>
-                <li>
-                  <a href="#!" className="hover:text-stone-900">
-                    Shipping
-                  </a>
-                </li>
-                <li>
-                  <a href="#!" className="hover:text-stone-900">
-                    FAQs
-                  </a>
-                </li>
-              </ul>
-            </FooterAccordion>
-
-            <FooterAccordion title="Company">
-              <ul className="space-y-2 text-[13px] text-stone-500">
-                <li>
-                  <a href="#!" className="hover:text-stone-900">
-                    About Us
-                  </a>
-                </li>
-                <li>
-                  <a href="#!" className="hover:text-stone-900">
-                    Our Story
-                  </a>
-                </li>
-                <li>
-                  <a href="#!" className="hover:text-stone-900">
-                    Store Locator
-                  </a>
-                </li>
-                <li>
-                  <a href="#!" className="hover:text-stone-900">
-                    Contact
-                  </a>
-                </li>
-              </ul>
-            </FooterAccordion>
-
-            <FooterAccordion title="Newsletter" defaultOpen>
-              <p className="mb-3 text-[13px] text-stone-500">
-                Get 10% off your first order.
-              </p>
-              <form onSubmit={handleSubscribe} className="flex gap-2">
-                <input
-                  type="email"
-                  required
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="Your email address"
-                  className="w-full rounded-full border border-stone-300 bg-white px-4 py-2 text-[13px] outline-none focus:border-[#20343a]"
-                />
-                <button
-                  type="submit"
-                  className="shrink-0 rounded-full bg-[#20343a] px-4 py-2 text-[12px] font-medium text-white hover:bg-[#16262b]"
-                >
-                  Join
-                </button>
-              </form>
-              {subscribed && (
-                <p className="mt-2 text-[12px] text-[#3C6E58]">
-                  Thanks — check your inbox.
-                </p>
-              )}
-            </FooterAccordion>
-          </div>
-        </div>
-
-        <div className="border-t border-stone-300/70">
-          <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-2 px-4 py-5 text-[12px] text-stone-500 sm:flex-row md:px-8">
-            <p>
-              © {new Date().getFullYear()} Mishu Sleep Co. All rights reserved.
-            </p>
-            <div className="flex gap-4">
-              <a href="#!" className="hover:text-stone-900">
-                Shop
-              </a>
-              <a href="#!" className="hover:text-stone-900">
-                About
-              </a>
-              <a href="#!" className="hover:text-stone-900">
-                Contact
-              </a>
-              <a href="#!" className="hover:text-stone-900">
-                Blog
-              </a>
-            </div>
-          </div>
-        </div>
-      </footer> */}
 
       {/* ---------------- Mobile bottom nav ---------------- */}
       <div className="fixed inset-x-0 bottom-0 z-40 flex items-center justify-around border-t border-stone-200 bg-white py-2 lg:hidden">
@@ -825,75 +515,6 @@ export default function WishlistPage() {
         />
       )}
 
-      {/* Cart drawer */}
-      <aside
-        className={classNames(
-          "fixed right-0 top-0 z-50 flex h-full w-full max-w-sm transform flex-col bg-white shadow-2xl transition-transform duration-300",
-          cartOpen ? "translate-x-0" : "translate-x-full",
-        )}
-      >
-        <div className="flex items-center justify-between border-b border-stone-200 px-5 py-4">
-          <h5 className="font-serif text-[16px] uppercase tracking-wide">
-            Shopping Cart
-          </h5>
-          <button onClick={() => setCartOpen(false)} aria-label="Close cart">
-            <X size={20} />
-          </button>
-        </div>
-
-        {remainingForFreeShip > 0 ? (
-          <div className="border-b border-stone-200 bg-[#F6F3ED] px-5 py-3 text-[13px]">
-            Add{" "}
-            <span className="font-semibold text-[#B3502E]">
-              ${remainingForFreeShip.toFixed(2)}
-            </span>{" "}
-            more for <span className="font-semibold">free shipping</span>
-          </div>
-        ) : (
-          <div className="border-b border-stone-200 bg-[#3C6E58]/10 px-5 py-3 text-[13px] text-[#3C6E58]">
-            You've unlocked free shipping 🎉
-          </div>
-        )}
-
-        <div className="flex-1 overflow-y-auto px-5">
-          {cart.length === 0 ? (
-            <p className="py-12 text-center text-[13px] text-stone-500">
-              Your cart is empty.
-            </p>
-          ) : (
-            cart.map((item) => (
-              <CartLine
-                key={item.id}
-                item={item}
-                onQty={updateQty}
-                onRemove={removeFromCart}
-              />
-            ))
-          )}
-        </div>
-
-        {cart.length > 0 && (
-          <div className="border-t border-stone-200 px-5 py-4">
-            <div className="mb-3 flex items-center justify-between">
-              <span className="font-serif text-[16px]">Subtotal</span>
-              <span className="font-serif text-[16px]">
-                ${subtotal.toFixed(2)}
-              </span>
-            </div>
-            <p className="mb-3 text-[12px] text-stone-500">
-              Taxes and shipping calculated at checkout.
-            </p>
-            <div className="flex flex-col gap-2">
-              <button className="rounded-full border border-stone-800 py-2.5 text-[12px] font-semibold uppercase tracking-widest hover:bg-stone-100">
-                View Cart
-              </button>
-              <button className="rounded-full bg-[#20343a] py-2.5 text-[12px] font-semibold uppercase tracking-widest text-white hover:bg-[#16262b]">
-                Checkout
-              </button>
-            </div>
-          </div>
-        )}
-      </aside>
 
       {/* Account drawer */}
       <aside
@@ -1040,19 +661,17 @@ export default function WishlistPage() {
             <img
               src={quickView.img}
               alt={quickView.name}
+              onError={(e) => {
+                e.target.src =
+                  "https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=400";
+              }}
               className="aspect-[4/5] w-full rounded-lg object-cover"
             />
             <div className="flex flex-col justify-center">
               <h3 className="font-serif text-2xl text-stone-900">
                 {quickView.name}
               </h3>
-              <Price price={quickView.price} salePrice={quickView.salePrice} />
-              <Swatches colors={quickView.swatches} />
-              {quickView.sizes?.length > 0 && (
-                <p className="mt-3 text-[13px] text-stone-500">
-                  Sizes: {quickView.sizes.join(", ")}
-                </p>
-              )}
+              <Price prize={quickView.prize} />
               <button
                 onClick={() => {
                   addToCart(quickView);

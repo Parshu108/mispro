@@ -127,39 +127,6 @@
       "payment": "cod"
     },
     {
-      "id": "e81f",
-      "products": [
-        {
-          "id": "3",
-          "name": "Ortho Mattress",
-          "img": "../src/image/shop/Ortho-Pro.png",
-          "prize": 6120,
-          "qnty": 1
-        },
-        {
-          "id": "2",
-          "name": "Dream Catcher Mattress",
-          "img": "../src/image/shop/Dream-Catcher-Mattress.png",
-          "prize": 6480,
-          "qnty": 1
-        }
-      ],
-      "totalamount": 12600
-    },
-    {
-      "id": "0961",
-      "products": [
-        {
-          "id": "2",
-          "name": "Dream Catcher Mattress",
-          "img": "../src/image/shop/Dream-Catcher-Mattress.png",
-          "prize": 6480,
-          "qnty": 1
-        }
-      ],
-      "totalamount": 6480
-    },
-    {
       "id": "ce98",
       "products": [
         {
@@ -178,7 +145,8 @@
       "address": "45 purwasa nagar ashima mall bhopal madhya pradesh\n45 purwasa nagar ashima mall bhopal madhya",
       "city": "Bhopal",
       "state": "Madhya Pradesh",
-      "pincode": "462026"
+      "pincode": "462026",
+      "status": "Cancelled"
     },
     {
       "id": "348d",
@@ -199,7 +167,8 @@
       "city": "Bhopal",
       "state": "Madhya Pradesh",
       "pincode": "462026",
-      "payment": "cod"
+      "payment": "cod",
+      "status": "Shipped"
     },
     {
       "id": "cf4c",
@@ -220,34 +189,8 @@
       "address": "House no. 45, Purswasa Nagar",
       "city": "Jatkhedi, Bhopal",
       "state": "Madhya Pradesh",
-      "pincode": "462027"
-    },
-    {
-      "id": "7140",
-      "products": [
-        {
-          "id": "1",
-          "name": "astron mattress",
-          "img": "../src/image/products/dot-01.jpg",
-          "prize": 9900,
-          "qnty": 1
-        },
-        {
-          "id": "10",
-          "name": "Dream Catcher Mattress",
-          "img": "../src/image/products/pr-16.jpg",
-          "prize": 6480,
-          "qnty": 1
-        },
-        {
-          "id": "22",
-          "name": "Dream Catcher Mattress",
-          "img": "../src/image/products/pr-46.jpg",
-          "prize": 6480,
-          "qnty": 1
-        }
-      ],
-      "totalamount": 22860
+      "pincode": "462027",
+      "status": "Delivered"
     },
     {
       "id": "5706",
@@ -260,7 +203,8 @@
           "qnty": 1
         }
       ],
-      "totalamount": 6480
+      "totalamount": 6480,
+      "status": "Shipped"
     },
     {
       "id": "d35d",
@@ -282,6 +226,52 @@
       "pincode": "847103",
       "phone": "0123456789",
       "email": "princekumar577gh@gmail.com"
+    },
+    {
+      "id": "ac42",
+      "products": [
+        {
+          "id": "2",
+          "name": "Dream Catcher Mattress",
+          "img": "../src/image/shop/Dream-Catcher-Mattress.png",
+          "prize": 6480,
+          "qnty": 1
+        }
+      ],
+      "totalamount": 6480,
+      "fullname": "PRASHURAM KUMAR Sahani",
+      "phone": "09122539824",
+      "email": "prashuramsahanivictory@gmail.com",
+      "address": "45 purwasa nagar ashima mall bhopal madhya pradesh\n45 purwasa nagar ashima mall bhopal madhya",
+      "city": "Bhopal",
+      "state": "Madhya Pradesh",
+      "pincode": "462026",
+      "payment": "cod",
+      "status": "Cancelled",
+      "orderDate": "14/9/2026"
+    },
+    {
+      "id": "87f8",
+      "products": [
+        {
+          "id": "1",
+          "name": "astron mattress",
+          "img": "../src/image/shop/astron-mattress.png",
+          "prize": 9900,
+          "qnty": 1
+        }
+      ],
+      "totalamount": 9900,
+      "fullname": "PRASHURAM KUMAR Sahani",
+      "phone": "09122539824",
+      "email": "prashuramsahanivictory@gmail.com",
+      "address": "45 purwasa nagar ashima mall bhopal madhya pradesh\n45 purwasa nagar ashima mall bhopal madhya",
+      "city": "Bhopal",
+      "state": "Madhya Pradesh",
+      "pincode": "462026",
+      "payment": "cod",
+      "status": "Delivered",
+      "orderDate": "14/9/2026"
     }
   ],
   "product2": [
@@ -298,10 +288,10 @@
       "img": "../src/image/products/dot-02.jpg"
     },
     {
-      "id": "3",
       "name": "Ortho Mattress",
       "prize": 6120,
-      "img": "../src/image/products/pr-04.jpg"
+      "img": "../src/image/products/pr-04.jpg",
+      "id": "3"
     },
     {
       "id": "4",
@@ -452,6 +442,18 @@
       "name": "Vintage Mattress",
       "prize": 9900,
       "img": "../src/image/products/thumb-06.jpg"
+    },
+    {
+      "id": "0ee0",
+      "name": "foam matters",
+      "prize": 2999,
+      "img": "../src/image/shop/Vintage-Pro.png"
+    },
+    {
+      "name": "floridadecor",
+      "prize": 5999,
+      "img": "https://floridadecor.in/cdn/shop/files/cm-cloud05-mustard_3_96577c4e-3392-48e6-82b1-2a5b81b96b01.jpg?v=1770381480",
+      "id": "7e64"
     }
   ]
 }
