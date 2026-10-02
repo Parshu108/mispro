@@ -228,29 +228,6 @@
       "email": "princekumar577gh@gmail.com"
     },
     {
-      "id": "ac42",
-      "products": [
-        {
-          "id": "2",
-          "name": "Dream Catcher Mattress",
-          "img": "../src/image/shop/Dream-Catcher-Mattress.png",
-          "prize": 6480,
-          "qnty": 1
-        }
-      ],
-      "totalamount": 6480,
-      "fullname": "PRASHURAM KUMAR Sahani",
-      "phone": "09122539824",
-      "email": "prashuramsahanivictory@gmail.com",
-      "address": "45 purwasa nagar ashima mall bhopal madhya pradesh\n45 purwasa nagar ashima mall bhopal madhya",
-      "city": "Bhopal",
-      "state": "Madhya Pradesh",
-      "pincode": "462026",
-      "payment": "cod",
-      "status": "Cancelled",
-      "orderDate": "14/9/2026"
-    },
-    {
       "id": "87f8",
       "products": [
         {
@@ -271,6 +248,29 @@
       "pincode": "462026",
       "payment": "cod",
       "status": "Delivered",
+      "orderDate": "14/9/2026"
+    },
+    {
+      "id": "c132",
+      "products": [
+        {
+          "id": "9",
+          "name": "astron mattress",
+          "img": "../src/image/products/pr-15.jpg",
+          "prize": 9900,
+          "qnty": 1
+        }
+      ],
+      "totalamount": 9900,
+      "fullname": "Parshuram Sahani",
+      "phone": "09122539824",
+      "email": "prashuramsahanivictory@gmail.com",
+      "address": "House no. 45, Purswasa Nagar",
+      "city": "Jatkhedi, Bhopal",
+      "state": "Madhya Pradesh",
+      "pincode": "462027",
+      "payment": "cod",
+      "status": "Pending",
       "orderDate": "14/9/2026"
     }
   ],
